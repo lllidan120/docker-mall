@@ -82,7 +82,7 @@ util.delRow = function (rowId, uid, vm) {
             });
         }
     });
-};
+}; 
 // http://yj.kiy.cn/
 // http://yj.kiy.cn:9504
 // http://localhost:38407
@@ -215,24 +215,35 @@ util.postApiData = function (param, url) {
     });
 };
 
+// util.getLoginData = function (param) {
+//     const paramData = Object.assign(param, {
+//         'm': 'login'
+//     });
+//     const data = Object.assign(
+//         {'uid': 'd3bd0809-8030-4843-9fed-48878edb2f6a'},
+//         {param: paramData}
+//     )
+//     var en = encode(JSON.stringify(data));
+//     return axios.post(ajaxUrl + '/Admins/GetData/GetAjaxData', {
+//         data: en
+//     }).then((res) => {
+//         return Promise.resolve(res.data);
+//     }).catch((e) => {
+//         console.log(e);
+//     });
+// };
 util.getLoginData = function (param) {
-    const paramData = Object.assign(param, {
-        'm': 'login'
+    const data = Object.assign(param, {}, {
+
     });
-    const data = Object.assign(
-        {'uid': 'd3bd0809-8030-4843-9fed-48878edb2f6a'},
-        {param: paramData}
-    )
-    console.log(data);
-    
     var en = encode(JSON.stringify(data));
-    return axios.post(ajaxUrl + '/Admins/GetData/GetAjaxData', {
-        data: en
-    }).then((res) => {
-        return Promise.resolve(res.data);
-    }).catch((e) => {
-        console.log(e);
-    });
+    return axios.post(ajaxUrl + 'BackStage/Login/Login',
+                param
+                ).then((res) => {
+                    return Promise.resolve(res.data);
+                }).catch((e) => {
+                    console.log(e);
+                });
 };
 
 util.getAjaxData = function (param, strMethod, uid) {
@@ -290,7 +301,7 @@ util.getDataGrid = function (param, strMethod, uid, vm) {
         'uid': uidString
     });
     // if (env == 'development') {
-    console.log(JSON.stringify(data));
+    // console.log(JSON.stringify(data));
     // }
     var en = encode(JSON.stringify(data));
 

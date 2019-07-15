@@ -54,7 +54,7 @@ module.exports = merge(webpackBaseConfig, {
         stats: {
             colors: true
         },
-        host: '0.0.0.0',
+        // host: 'localhost',
         port: 8089,
         proxy: {
             '/api': {

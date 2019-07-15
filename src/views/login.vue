@@ -167,45 +167,75 @@ export default {
                 new Date().getTime();
         },
         handleSubmit() {
-            var jsonP = { key: this.form.userName, pwd: this.form.password };
-            var _this = this;
-            Util.getLoginData(jsonP).then(res => {
-                if (!res.SUCCESS) {
-                    this.$Notice.error({
-                        title: "登录失败",
-                        desc: res.MESSAGE,
-                        duration: 4,
-                        name: "greeting"
-                    });
-                    // if(res.minTimesWithoutCheckCode === 3 && _this.subNum >= 2) {
-                    //     _this.getCheckCode()
-                    // }
-                    // _this.subNum++
-                    // return
-                } else {
-                    Cookies.set("user", _this.form.userName);
-                    Cookies.set("password", _this.form.password);
-                    Cookies.set("YSH-PlatformManage", res.DATA.Id);
-                    Cookies.set("YSH-PlatformUsername", _this.form.userName);
-                    _this.$store.commit(
-                        "setAvator",
-                        "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3448484253,3685836170&fm=27&gp=0.jpg"
-                    );
-                    // 设置权限RoleId
-                    Cookies.set("access", res.DATA.RoleId);
-                    const userInfo = Object.assign(res.DATA, {
-                        userId: res.DATA.Id,
-                        TrueName: res.DATA.RealName
-                    });
-                    console.log(JSON.stringify(userInfo));
+            var jsonP = { "username": this.form.userName, "password": this.form.password , "checkCode": this.form.checkCode}
+                var _this = this;
+                Util.getLoginData(jsonP).then((res) => {
+                    if(!res.success) {
+                        this.$Notice.error({
+                            title: '登录失败',
+                            desc: res.msg,
+                            duration: 4,
+                            name: 'greeting'
+                        });
+                        if(res.minTimesWithoutCheckCode === 3 && _this.subNum >= 2) {
+                            _this.getCheckCode()
+                        }
+                        _this.subNum++
+                        return
+                    } else {
+                        Cookies.set('user', _this.form.userName);
+                        Cookies.set('password', _this.form.password);
+                        Cookies.set('YSH-PlatformManage' , res.userId)
+                        Cookies.set('YSH-PlatformUsername' , _this.form.userName)
+                        _this.$store.commit('setAvator', 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3448484253,3685836170&fm=27&gp=0.jpg');
+                        // 设置权限RoleId
+                        Cookies.set('access', res.RoleId);
+                        Cookies.set('userInfo' , JSON.stringify(res))
+                        Cookies.set('strWebSession' , res.strWebSession)
+                        _this.$router.push({
+                            name: 'home_index'
+                        });
+                    }
+                })
+            // var jsonP = { key: this.form.userName, pwd: this.form.password };
+            // var _this = this;
+            // Util.getLoginData(jsonP).then(res => {
+            //     if (!res.SUCCESS) {
+            //         this.$Notice.error({
+            //             title: "登录失败",
+            //             desc: res.MESSAGE,
+            //             duration: 4,
+            //             name: "greeting"
+            //         });
+            //         // if(res.minTimesWithoutCheckCode === 3 && _this.subNum >= 2) {
+            //         //     _this.getCheckCode()
+            //         // }
+            //         // _this.subNum++
+            //         // return
+            //     } else {
+            //         Cookies.set("user", _this.form.userName);
+            //         Cookies.set("password", _this.form.password);
+            //         Cookies.set("YSH-PlatformManage", res.DATA.Id);
+            //         Cookies.set("YSH-PlatformUsername", _this.form.userName);
+            //         _this.$store.commit(
+            //             "setAvator",
+            //             "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3448484253,3685836170&fm=27&gp=0.jpg"
+            //         );
+            //         // 设置权限RoleId
+            //         Cookies.set("access", res.DATA.RoleId);
+            //         const userInfo = Object.assign(res.DATA, {
+            //             userId: res.DATA.Id,
+            //             TrueName: res.DATA.RealName
+            //         });
+            //         console.log(JSON.stringify(userInfo));
                     
-                    Cookies.set("userInfo", JSON.stringify(userInfo));
-                    Cookies.set("strWebSession", res.strWebSession);
-                    _this.$router.push({
-                        name: "home_index"
-                    });
-                }
-            });
+            //         Cookies.set("userInfo", JSON.stringify(userInfo));
+            //         Cookies.set("strWebSession", res.strWebSession);
+            //         _this.$router.push({
+            //             name: "home_index"
+            //         });
+            //     }
+            // });
         },
         initBackgroung() {
             var WIDTH = window.innerWidth,
